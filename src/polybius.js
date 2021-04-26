@@ -39,11 +39,9 @@ const polybiusModule = (function () {
   // helper function to decode messages
   function decodeMessage(input) {
     let message = "";
-    let spaces = 0;
-    //loops by pair. Maintains and count spaces in message
+    //loops by pair and maintains spaces in message
     for (let i = 0; i < input.length - 1; i += 2) {
       if (input[i].includes(" ")) {
-        spaces++;
         message += input[i];
         i--;
       } else {
@@ -52,19 +50,34 @@ const polybiusModule = (function () {
         message += letter.toLowerCase();
       }
     }
-    //Number of characters in the string minus spaces should be even. Otherwise, return false
-    if ((input.length - spaces) % 2 === 1) {
-      return false;
-    } else {
-      return message;
+    return message;
+  }
+
+  //helper function to check for incorrect input length.
+  function inputLengthOdd(input) {
+    answer = false;
+    let spaces = 0;
+    for (let i = 0; i < input.length; i++) {
+      if (input[i].includes(" ")) {
+        spaces++;
+      }
     }
+    if ((input.length - spaces) % 2 === 1) {
+      answer = true;
+    }
+    return answer;
   }
 
   function polybius(input, encode = true) {
+    if (encode === false) {
+      if (inputLengthOdd(input)) {
+        return false;
+      } else {
+        return decodeMessage(input);
+      }
+    }
     if (encode) {
       return encodeMessage(input);
-    } else {
-      return decodeMessage(input);
     }
   }
 
